@@ -1,0 +1,27 @@
+[
+  {
+    "ticket_id": "T-1001",
+    "subject": "Need VPN access re-provisioned after laptop replacement",
+    "body": "My laptop was replaced last week and I can no longer connect to the company VPN. I need this fixed today, I have a client call this afternoon."
+  },
+  {
+    "ticket_id": "T-1002",
+    "subject": "New contractor onboarding - paperwork and accounts",
+    "body": "We have a new contractor starting Monday. Need their email, CRM login, and standard software licenses set up before then."
+  },
+  {
+    "ticket_id": "T-1003",
+    "subject": "Invoice #4471 shows wrong billing address",
+    "body": "Client noticed the billing address on invoice 4471 is our old office address. Can someone correct and resend?"
+  },
+  {
+    "ticket_id": "T-1004",
+    "subject": "Shared drive permissions error",
+    "body": "I'm getting 'access denied' on the shared project drive since this morning, nothing changed on my end that I know of."
+  },
+  {
+    "ticket_id": "T-1005",
+    "subject": "Annual CRM license renewal due next week",
+    "body": "Just a heads up that our CRM seat licenses renew next week, want to confirm someone is on top of the renewal so we don't lose access."
+  }
+]
