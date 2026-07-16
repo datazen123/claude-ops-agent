@@ -28,14 +28,40 @@ data/sample_tickets.json
 ```
 
 - `llm_client.py` - thin provider adapter. Anthropic is the tested backend
-  used throughout this repo. An OpenAI-compatible adapter is included for
-  the same interface, but has **not** been run against a live OpenAI/Codex
-  key in this repo - treat it as reference code until verified.
+  used throughout this repo. OpenAI and Ask Sage adapters are included for
+  the same interface, but have **not** been run against live credentials in
+  this repo - treat them as reference code until verified.
 - `mock_crm.py` - stands in for a real CRM/ticketing API. Exposes
   `triage_ticket` as a Claude tool so the agent's decisions land somewhere
   structured, not just as printed text.
 - `agent.py` - the triage loop: one Claude call per ticket, tool use to
   record the result, then a summary report read back from the mock CRM.
+
+## Deployment path
+
+This demo calls the Anthropic API directly, which is the right choice for a
+portfolio piece. A production version of this for a DoD-adjacent client would
+run through whatever gateway that client has actually authorized - most
+commonly:
+
+- **[Ask Sage](https://www.asksage.ai/)** - the multi-model gateway built for
+  the Defense Industrial Base specifically (not just uniformed personnel),
+  IL5/IL6 authorized. `llm_client.py` includes an `AskSageClient` built from
+  Ask Sage's [public API docs](https://github.com/Ask-Sage/AskSage-Open-Source-Community),
+  though its documented `/query` endpoint has no tool-use parameter, so the
+  CRM-sync pattern here would need a different integration shape there.
+- **[GenAI.mil](https://www.war.gov/)** - CDAO's enterprise platform for
+  military/civilian personnel (IL5/CUI), currently running Google Gemini,
+  xAI Grok, and OpenAI's ChatGPT.
+- **AWS GovCloud Bedrock** - Claude itself is available here at IL5+, and in
+  the AWS Secret region at IL6, independent of direct-to-Anthropic contracts.
+
+Worth knowing: Claude's status specifically at the DoD-contract level has
+been politically contested since early 2026 (a designation dispute, since
+partly reversed by a court injunction) - it isn't currently on GenAI.mil's
+provider list. That's a reason to keep this adapter provider-agnostic rather
+than assuming Claude is the delivery vehicle for any given client, not a
+reason to avoid building with Claude.
 
 ## Running it
 
