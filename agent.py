@@ -43,12 +43,16 @@ def triage_one(client: AnthropicClient, ticket: dict) -> None:
         tools=[mock_crm.TRIAGE_TOOL_SCHEMA],
     )
 
+    called_tool = False
     for block in response.content:
         if block.type == "tool_use" and block.name == "triage_ticket":
             result = mock_crm.triage_ticket(**block.input)
             print(f"  -> {result}")
+            called_tool = True
         elif block.type == "text" and block.text.strip():
             print(f"  (model note: {block.text.strip()[:120]})")
+    if not called_tool:
+        print(f"  WARNING: model did not call triage_ticket for {ticket['ticket_id']} - left un-triaged.")
 
 
 def main() -> None:
@@ -60,7 +64,10 @@ def main() -> None:
     print(f"Triaging {len(tickets)} synthetic tickets with Claude...\n")
     for ticket in tickets:
         print(f"[{ticket['ticket_id']}] {ticket['subject']}")
-        triage_one(client, ticket)
+        try:
+            triage_one(client, ticket)
+        except Exception as exc:
+            print(f"  ERROR: failed to triage {ticket['ticket_id']}: {exc}")
         print()
 
     print("=== Triage summary (from mock CRM) ===")

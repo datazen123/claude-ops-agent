@@ -64,8 +64,13 @@ def main() -> None:
     results = []
     for i, row in enumerate(sample):
         ticket_id = f"RT-{i+1:03d}"
-        decision = triage_real_ticket(client, ticket_id, row["subject"], row["body"][:600])
+        try:
+            decision = triage_real_ticket(client, ticket_id, row["subject"], row["body"][:600])
+        except Exception as exc:
+            print(f"{ticket_id}: ERROR calling API ({exc}) - skipping")
+            continue
         if decision is None:
+            print(f"{ticket_id}: model did not call triage_ticket - skipping")
             continue
         results.append({
             "ticket_id": ticket_id,

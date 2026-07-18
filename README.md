@@ -108,4 +108,34 @@ export $(grep -v '^#' .env | xargs)
 python agent.py
 ```
 
+## Tests + CI
+
+`test_mock_crm.py` and `test_llm_client.py` cover everything deterministic
+(the CRM round-trip, the provider guard clauses) - no API key or network
+needed, safe to run in CI on every push:
+
+```bash
+pip install -r requirements-dev.txt
+pytest -q
+```
+
+Writing these tests caught a real bug: `OpenAIClient` was importing the
+`openai` package before checking for an API key, so on a machine without
+`openai` installed (which is every machine this repo ships to, since that
+provider is intentionally untested) it raised the wrong error type. Fixed
+by reordering the guard clause - the kind of thing tests exist to catch.
+
+## Security notes
+
+- API keys are read from environment variables only, never hardcoded;
+  `.env` is gitignored, `.env.example` ships placeholders only.
+- Checked (2026-07-18): this repository's full git history contains zero
+  occurrences of any real API key.
+- Network calls to the Ask Sage gateway have explicit 30s timeouts to
+  avoid an unbounded hang if the endpoint stalls.
+- Per-ticket API failures are caught and logged rather than crashing the
+  whole batch partway through.
+- Dependencies are version-pinned with an upper bound
+  (`>=X,<NEXT_MAJOR`), not left open-ended.
+
 Built with [Claude Code](https://claude.com/claude-code).

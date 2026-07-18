@@ -45,11 +45,11 @@ class OpenAIClient:
     """
 
     def __init__(self, model: str = "gpt-5"):
-        import openai  # type: ignore
-
         api_key = os.environ.get("OPENAI_API_KEY")
         if not api_key:
             raise RuntimeError("Set OPENAI_API_KEY before running this demo.")
+        import openai  # type: ignore
+
         self._client = openai.OpenAI(api_key=api_key)
         self.model = model
 
@@ -97,6 +97,7 @@ class AskSageClient:
         auth = requests.post(
             f"{self.USER_BASE_URL}/get-token-with-api-key",
             json={"email": email, "api_key": api_key},
+            timeout=30,
         ).json()
         token = auth.get("access_token", api_key)
         self._headers = {"x-access-tokens": token, "Content-Type": "application/json"}
@@ -116,6 +117,7 @@ class AskSageClient:
                 "dataset": "none",
                 "live": 0,
             },
+            timeout=30,
         )
         return response.json()  # {"message": "...", "references": [...], ...}
 
