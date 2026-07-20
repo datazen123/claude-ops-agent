@@ -15,6 +15,18 @@ follows a fairly predictable decision process. This demonstrates that
 process handed to an LLM agent with tool use, instead of a human doing the
 first pass by hand.
 
+**Real, confirmed, currently-active evidence** (verified via
+USASpending.gov, not just press): Peraton holds `W91QVN26FA218`, active
+**right now** (Feb 2026 → Jan 2029), "USFK J6 IT Support Services (CJS)" -
+plus five more named Peraton task orders covering USFK J6/JCC IT support
+back to 2019 (`W91QVN20F0440` $47.4M, `W91QVN19F0246` $23.8M, and others).
+Peraton, not any of the companies referenced elsewhere in this portfolio,
+is the entrenched incumbent across USFK's core J6 IT ecosystem - the
+category this repo demonstrates (IT ops/ticket triage) sits squarely
+inside that scope. SAIC also holds an active USACISA-P network-operations
+task order (`W91QVN25FA418`, $9.8M, through Apr 2026) in the adjacent
+network-ops category.
+
 ## Architecture
 
 ```
